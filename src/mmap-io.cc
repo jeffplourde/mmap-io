@@ -181,14 +181,14 @@ JS_FN(mmap_incore) {
             if (size % page_size > 0) {
               pages++;
             }
-
+#ifndef _WIN32
             int ret = mincore(data, size, resultData);
 
             if (ret) {
                 free(resultData);
                 return Nan::ThrowError((std::string("mincore() failed, ") + std::to_string(errno)).c_str());
             }
-
+#endif
             // Now we want to check all of the pages
             uint32_t pages_mapped = 0;
             uint32_t pages_unmapped = 0;
